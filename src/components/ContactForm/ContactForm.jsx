@@ -6,14 +6,16 @@ import {
   FormWrapper,
   LabelWrapper,
 } from './ContactForm.styled.js';
-import { addContact } from 'redux/contactsSlice.js';
+// import { addContact } from 'redux/contactsSlice.js';
+import { selectContacts } from 'redux/selectors.js';
+import { addContactThunk } from 'redux/operations.js';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(selectContacts);
 
   const onChangeValue = e => {
     const { name, value } = e.target;
@@ -40,7 +42,7 @@ export const ContactForm = () => {
     if (duplicateName) {
       return alert(`${name} is already in contact`);
     }
-    dispatch(addContact(name, number));
+    dispatch(addContactThunk(name, number));
 
     reset();
   };

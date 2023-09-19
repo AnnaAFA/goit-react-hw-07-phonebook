@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import { List, ListButton, ListWrapper } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeContact } from 'redux/contactsSlice';
+// import { removeContact } from 'redux/contactsSlice';
+import { selectContacts, selectFilter } from 'redux/selectors';
+import { deleteContactThunk } from 'redux/operations';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(selectContacts);
+  // const isLoading = useSelector(selectIsLoading);
+  // const error = useSelector(selectError);
+  const filter = useSelector(selectFilter);
 
   const dispatch = useDispatch();
 
@@ -13,7 +17,7 @@ export const ContactList = () => {
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const onRemoveContact = id => dispatch(removeContact(id));
+  const onRemoveContact = id => dispatch(deleteContactThunk(id));
 
   return (
     <ListWrapper>
