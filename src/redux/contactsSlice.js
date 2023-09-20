@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { nanoid } from 'nanoid';
 import {
   addContactThunk,
   deleteContactThunk,
@@ -21,9 +20,9 @@ const contactsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchContactsThunk.fulfilled, (state, action) => {
-        state.items = action.payload;
         state.isLoading = false;
         state.error = null;
+        state.items = action.payload;
       })
       .addCase(fetchContactsThunk.rejected, (state, action) => {
         state.isLoading = false;
@@ -33,9 +32,9 @@ const contactsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addContactThunk.fulfilled, (state, action) => {
-        state.items = state.items.push(action.payload);
         state.isLoading = false;
         state.error = null;
+        state.items = [...state.items, action.payload];
       })
       .addCase(addContactThunk.rejected, (state, action) => {
         state.isLoading = false;
@@ -45,34 +44,14 @@ const contactsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(deleteContactThunk.fulfilled, (state, action) => {
-        state.items = state.items.filter(item => item.id !== action.payload.id);
         state.isLoading = false;
         state.error = null;
+        state.items = state.items.filter(item => item.id !== action.payload.id);
       })
       .addCase(deleteContactThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       }),
-  // reducers: {
-  //   addContact: {
-  //     reducer(state, action) {
-  //       return [...state, action.payload];
-  //     },
-  //     prepare(name, number) {
-  //       return {
-  //         payload: {
-  //           id: nanoid(),
-  //           name,
-  //           number,
-  //         },
-  //       };
-  //     },
-  //   },
-  //   removeContact(state, action) {
-  //     return state.filter(contact => contact.id !== action.payload);
-  //   },
-  // },
 });
 
-// export const { addContact, removeContact } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

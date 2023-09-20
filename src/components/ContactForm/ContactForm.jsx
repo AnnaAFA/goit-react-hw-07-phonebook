@@ -6,15 +6,15 @@ import {
   FormWrapper,
   LabelWrapper,
 } from './ContactForm.styled.js';
-// import { addContact } from 'redux/contactsSlice.js';
 import { selectContacts } from 'redux/selectors.js';
 import { addContactThunk } from 'redux/operations.js';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const dispatch = useDispatch();
+
   const contacts = useSelector(selectContacts);
 
   const onChangeValue = e => {
@@ -24,8 +24,8 @@ export const ContactForm = () => {
         setName(value);
         break;
 
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
 
       default:
@@ -42,14 +42,14 @@ export const ContactForm = () => {
     if (duplicateName) {
       return alert(`${name} is already in contact`);
     }
-    dispatch(addContactThunk(name, number));
+    dispatch(addContactThunk({ name, phone }));
 
     reset();
   };
 
   const reset = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -71,11 +71,11 @@ export const ContactForm = () => {
           <span>Number</span>
           <input
             type="tel"
-            name="number"
+            name="phone"
             pattern="\+?\d{1,4}?[\-.\s]?\(?\d{1,3}?\)?[\-.\s]?\d{1,4}[\-.\s]?\d{1,4}[\-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            value={number}
+            value={phone}
             onChange={onChangeValue}
           />
         </LabelWrapper>

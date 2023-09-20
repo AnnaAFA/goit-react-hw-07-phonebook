@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { FilterForm, FilterTitle } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from 'redux/filterSlice';
+import { selectFilter } from 'redux/selectors';
 
 export const Filter = () => {
   const dispatch = useDispatch();
@@ -12,14 +13,19 @@ export const Filter = () => {
     dispatch(setFilter(filterValue));
   };
 
-  const filter = useSelector(state => state.filter);
+  const filter = useSelector(selectFilter);
 
   return (
     <>
       <FilterForm>
         <FilterTitle>
           <span>Find contact by name</span>
-          <input type="text" value={filter} onChange={onFilterChange} />
+          <input
+            type="text"
+            name="filter"
+            value={filter}
+            onChange={onFilterChange}
+          />
         </FilterTitle>
       </FilterForm>
     </>

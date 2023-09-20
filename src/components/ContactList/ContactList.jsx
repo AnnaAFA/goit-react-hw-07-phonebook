@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
 import { List, ListButton, ListWrapper } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-// import { removeContact } from 'redux/contactsSlice';
 import { selectContacts, selectFilter } from 'redux/selectors';
 import { deleteContactThunk } from 'redux/operations';
 
 export const ContactList = () => {
   const contacts = useSelector(selectContacts);
-  // const isLoading = useSelector(selectIsLoading);
-  // const error = useSelector(selectError);
   const filter = useSelector(selectFilter);
 
   const dispatch = useDispatch();
@@ -25,7 +22,7 @@ export const ContactList = () => {
         {filterContacts.map(contact => (
           <li key={contact.id}>
             <p>
-              {contact.name}: {contact.number}
+              {contact.name} : {contact.phone}
             </p>
             <ListButton
               type="button"
@@ -45,7 +42,7 @@ ContactList.prototype = {
     PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
-      number: PropTypes.string,
+      phone: PropTypes.string,
     })
   ),
   onRemoveContact: PropTypes.func,
