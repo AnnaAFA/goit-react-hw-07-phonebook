@@ -11,47 +11,39 @@ const contactsInitialState = {
   error: null,
 };
 
+const handlePending = state => {
+  state.isLoading = true;
+  state.error = null;
+};
+
+const handleRejected = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
+};
+
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: contactsInitialState,
   extraReducers: builder =>
     builder
-      .addCase(fetchContactsThunk.pending, state => {
-        state.isLoading = true;
-      })
+      .addCase(fetchContactsThunk.pending, handlePending)
       .addCase(fetchContactsThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
         state.items = action.payload;
       })
-      .addCase(fetchContactsThunk.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-      .addCase(addContactThunk.pending, state => {
-        state.isLoading = true;
-      })
+      .addCase(fetchContactsThunk.rejected, handleRejected)
+      .addCase(addContactThunk.pending, handlePending)
       .addCase(addContactThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
         state.items = [...state.items, action.payload];
       })
-      .addCase(addContactThunk.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteContactThunk.pending, state => {
-        state.isLoading = true;
-      })
+      .addCase(addContactThunk.rejected, handleRejected)
+      .addCase(deleteContactThunk.pending, handlePending)
       .addCase(deleteContactThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
         state.items = state.items.filter(item => item.id !== action.payload.id);
       })
-      .addCase(deleteContactThunk.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      }),
+      .addCase(deleteContactThunk.rejected, handleRejected),
 });
 
 export const contactsReducer = contactsSlice.reducer;
